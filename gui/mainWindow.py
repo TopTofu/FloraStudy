@@ -1,28 +1,22 @@
 from models.CardSet import CardSet
 import os
-from typing import List, Set, Sized
-from util.loadFile import loadFile
+from typing import Dict
 from util.saveFile import saveFile
 from . import exportToFileWindow
 import PySimpleGUI as gui
 from util.findCardByKanji import findCardByKanji
 
 
-def init(config: dict) -> gui.Window:
+fileTypes = (('ALL Files', '*.*'),
+             ('FloraStudy Card-Files', '*.fsc'),
+             ('JSON Files', '*.json'),
+             ('CSV Files', '*.csv'))
+
+
+def init(config: Dict[str, str]) -> gui.Window:
     gui.theme("DarkTeal2")
 
-    importLayout = [[gui.Text('Choose file to import: '),
-                     gui.Input(key='IMPORT', enable_events=True),
-                     gui.FileBrowse(key='FILEIMPORT',
-                                    target='IMPORT',
-                                    file_types=[('ALL Files', '*.*'),
-                                                ('FloraStudy Card-Files',
-                                                 config['file-extension']),
-                                                ('JSON Files', '*.json'),
-                                                ('CSV Files', '*.csv')])
-                     ]]
-    
-    menuLayout = [['File', ['Open...::OPEN']]]
+    menuLayout = [['File', ['Open...', 'Save', 'Save as...']]]
 
     editLayout = [
         [gui.Text('CardName', size=(10, 1)), gui.Input(
@@ -36,13 +30,11 @@ def init(config: dict) -> gui.Window:
         [gui.Text('Category', size=(10, 1)), gui.Input(
             size=(50, 1), key='CATEGORYINPUT')],
         [gui.Button('Save', disabled=True, key='SAVEBUTTON'),
-         gui.Button('Export', disabled=True, key='EXPORTBUTTON')]]
+         gui.Button('Export', disabled=True, key='EXPORTBUTTON')]
+    ]
 
     layout = [
-        [gui.Menu(menuLayout)],
-        [gui.Frame('Import', importLayout)],
-        [gui.Text(key='FILENAMETEXT',
-                  auto_size_text=True, size=(30, 1))],
+        [gui.Menu(menuLayout, background_color='#FFFFFF')],
         [gui.Listbox(values=[], key='CARDLIST',
                      auto_size_text=True, size=(10, 10),
                      enable_events=True),
@@ -53,12 +45,13 @@ def init(config: dict) -> gui.Window:
     return window
 
 
-def runEventLoop(window: gui.Window, config: dict) -> None:
+def runEventLoop(window: gui.Window, config: Dict[str, str]) -> None:
     running = True
     currentCard = {}
     cardIndex = 0
     cardSet = None  # !!!
     columns = []
+    currentFile = ''
 
     while running:
         event, values = window.read()
@@ -67,16 +60,25 @@ def runEventLoop(window: gui.Window, config: dict) -> None:
             running = False
             break
 
-        elif event == 'IMPORT':
-            importPath = values['FILEIMPORT']
-            if importPath:
-                cardSet = CardSet(filePath=importPath)
+        elif event == 'Open...':
+            currentFile = gui.popup_get_file(
+                'Open file', no_window=True, file_types=fileTypes)
+            if currentFile:
+                cardSet = CardSet(filePath=currentFile)
                 # gets the main column from every card to display in listbox
                 window['CARDLIST'].update(
                     values=[card[cardSet.mainColumn] for card in cardSet.cards])
-                window['FILENAMETEXT'].update(
-                    f'{os.path.basename(importPath)}')
                 window['EXPORTBUTTON'].update(disabled=False)
+                window.set_title(f'FloraStudy - {os.path.basename(currentFile)}')
+        
+        elif event == 'Save as...':
+            savePath = gui.popup_get_file('Save File', no_window=True, file_types=fileTypes, save_as=True)
+            if cardSet is not None:
+                saveFile(cardSet.cards, savePath)
+
+        elif event == 'Save':
+            if cardSet is not None and currentFile:
+                saveFile(cardSet.cards, currentFile)
 
         elif event == 'CARDLIST':
             if values['CARDLIST']:
