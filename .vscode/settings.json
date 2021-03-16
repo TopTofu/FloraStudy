@@ -1,6 +1,8 @@
 {
     "files.exclude": {
-        "**/__pycache__": true
+        "**/__pycache__": true,
+        "**/dist": true,
+        "**/build": true,
     },
     "python.pythonPath": "C:\\Users\\leon\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
     "workbench.sideBar.location": "right"
