@@ -45,8 +45,8 @@ def loadFile(filePath: str) -> Tuple[List[Dict[str, str]], list]:
             columns = list(cardsList[0].keys()) # feels kinda weird because it's only looking at the first card and 
                                                 # takes the columns from that instead of check the other cards...
 
-    # else:
-    #     # log
-    #     print('Unknown file type')
+    else:
+        # log
+        print('Unknown file type')
 
     return cardsList, columns
