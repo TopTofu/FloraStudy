@@ -1,16 +1,17 @@
 import PySimpleGUI as gui
 import os
 from models.CardSet import CardSet
+from models.Card import Card
 from typing import Dict, Union
 from util.saveFile import saveFile
 from util.findCardByMainColumn import findCardByMainColumn
 import layout.Layout as Layout
+from . import studyWindow
 
 
-def init(cardSet: CardSet, config: Dict[str, str]) -> None:
+def init(cardSet: CardSet) -> None:
 
-    currentCard: Union[Dict[str, str], None] = None
-    currentCardIndex: Union[int] = -1
+    currentCard: Card = Card()
     columns = cardSet.columns
 
     window = Layout.getMainWindow(cardSet)
@@ -27,36 +28,40 @@ def init(cardSet: CardSet, config: Dict[str, str]) -> None:
             if importPath:
                 cardSet = CardSet(filePath=importPath)
                 # gets the main column from every card to display in listbox
-                window['CARDLIST'].update(values=cardSet.listValues)
+                window['CARDLIST'].update(values=cardSet.cards)
                 window.set_title(
                     f'FloraStudy - {os.path.basename(importPath)}')
 
         elif event == 'CARDLIST':
             if values['CARDLIST']:
-                currentCard, currentCardIndex = findCardByMainColumn(
-                    values['CARDLIST'][0], cardSet)
+                currentCard = values['CARDLIST'][0]
+
                 columns = cardSet.columns
 
                 for i, column in enumerate(columns):
-                    window[column.upper()].update(currentCard[columns[i]])
+                    window[column.upper()].update(
+                        currentCard.values[columns[i]])
 
                 window['SAVEBUTTON'].update(disabled=False)
 
         elif event == 'Save as...':
-            savePath = gui.popup_get_file(
-                'Save File', no_window=True, file_types=Layout.fileTypes, save_as=True)
-            saveFile(cardSet.cards, savePath)
+            savePath = Layout.getSaveAsWindow()
+            if savePath:
+                saveFile(cardSet, savePath)
 
         elif event == 'Save':
-            saveFile(cardSet.cards, cardSet.originPath)
+            saveFile(cardSet, cardSet.originPath)
 
         elif event == 'SAVEBUTTON':
-            newCard = {}
+            newValues = {column: window[column.upper()].get()
+                         for column in columns}
+
+            cardIndex = cardSet.cards.index(currentCard)
+
+            cardSet.updateCard(newValues, cardIndex)
+            window['CARDLIST'].update(values=cardSet.cards)
             
-            for i, column in enumerate(columns):
-                newCard.update({
-                    column: window[column.upper()].get()
-                })
-                
-            cardSet.updateCard(newCard, currentCardIndex)
-            window['CARDLIST'].update(values=cardSet.listValues)
+            saveFile(cardSet, cardSet.originPath)
+
+        elif event == 'STUDYBUTTON':
+            studyWindow.init(cardSet)

@@ -3,12 +3,15 @@ from pathlib import Path
 import mimetypes
 import csv
 import json
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Union
+from models.Card import Card
 
 
-def loadFile(filePath: str) -> Tuple[List[Dict[str, str]], list]:
-    cardsList = []
-    columns = []
+def loadFile(filePath: str) -> Tuple[List[Card], List[str], Dict[str, str]]:
+    cardList: List[Card] = []
+    columns: List[str] = []
+    cardSetConfig: Dict[str, str] = {}
+    
     mimetypes.add_type('FloraStudy Card-File', '.fsc')
     extensions = [s for s in Path(
         filePath).suffixes if s in mimetypes.types_map]
@@ -24,7 +27,7 @@ def loadFile(filePath: str) -> Tuple[List[Dict[str, str]], list]:
 
             for i in range(len(rowList)):
                 # first column in excel (bad var name); these are the column names
-                columns.append(rowList[i][0])
+                columns.append(rowList[i][0].lower())
 
             for cardName in rowList[0]:
                 # basicly the index of the card in the excel table
@@ -36,17 +39,31 @@ def loadFile(filePath: str) -> Tuple[List[Dict[str, str]], list]:
                     # for every coloum name add the card data to the entry
                     entry.update({row[0]: row[index]})
 
-                cardsList.append(entry)  # add that entry to the card set
+                # add that card to the card set
+                cardList.append(Card(entry, columns[0]))
 
     elif '.json' in extensions or '.fsc' in extensions:
         with open(filePath, 'r', encoding='utf-8') as inputFile:
-            jsonString = inputFile.read()
-            cardsList = json.loads(jsonString)
-            columns = list(cardsList[0].keys()) # feels kinda weird because it's only looking at the first card and 
-                                                # takes the columns from that instead of check the other cards...
+            jsonObject = json.loads(inputFile.read())
+            
+            if 'mainColumn' in jsonObject[0]:
+                cardSetConfig = jsonObject.pop(0)
+            else:
+                for i, cardDict in enumerate(jsonObject):
+                    if 'mainColumn' in cardDict:
+                        cardSetConfig = jsonObject.pop(i)  
 
-    else:
-        # log
-        print('Unknown file type')
+            for cardDict in jsonObject:
+                cardList.append(Card(values=cardDict, 
+                                     mainColumn=cardSetConfig.get('mainColumn', None),
+                                     data=cardDict.pop('data')))
 
-    return cardsList, columns
+            # feels kinda weird because it's only looking at the first card and
+            # takes the columns from that instead of check the other cards...
+            columns = list(cardList[0].values.keys())
+
+    if not 'data' in columns:
+        for card in cardList:
+            card.data = {'data': {'score': 0, 'lastStudied': None}}
+
+    return cardList, columns, cardSetConfig

@@ -29,6 +29,9 @@ def init() -> Union[CardSet, None]:
             if importPath:
                 cards = CardSet(importPath)
                 break
+
+        print(event)
+        
     
     window.close()
     return cards

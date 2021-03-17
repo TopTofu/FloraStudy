@@ -1,9 +1,9 @@
 from models.CardSet import CardSet
-from typing import Tuple, Dict, List
+from models.Card import Card
+from typing import Tuple, Dict, List, Optional
 
-def findCardByMainColumn(term: str, cardSet: CardSet) -> Tuple[Dict[str, str], int]:
+def findCardByMainColumn(term: str, cardSet: CardSet) -> Tuple[Card, int]:
     for card in cardSet.cards:
-        if card[cardSet.mainColumn] == term:
+        if card.mainTerm == term:
             return card, cardSet.cards.index(card)
-        
-    return {}, -1
+    return Card(), -1

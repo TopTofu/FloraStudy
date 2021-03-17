@@ -1,0 +1,28 @@
+[x] import .csv
+[x] parse csv to useable format
+[x] basic rest api
+[x] ui
+[ ] study ui
+[ ] formatting of prompts eg.: choose which values to show
+[x] dictionary updating
+[x] display and store japanese chars
+[ ] scoring
+[x] persistence
+[ ] keybindings
+[ ] modes
+[x] project structure
+[x] editor
+[ ] add cards in editor
+[ ] stats
+[ ] log
+[ ] fully implement the .fsc file type
+[ ] right click file -> open with FloraStudy
+[ ] better styling (element.widget allows for more customization)
+[ ] Visual learing (bonsai)
+[ ] create new store
+[ ] edit whole set eg.: delete/add/swap fields, set mainColumn
+
+-----
+
+[ ] App
+[ ] Rest Server and API
