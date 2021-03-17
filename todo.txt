@@ -9,6 +9,7 @@
 [ ] scoring
 [x] persistence
 [ ] keybindings
+[ ] configurable keybindings
 [ ] modes
 [x] project structure
 [x] editor
@@ -19,7 +20,7 @@
 [ ] right click file -> open with FloraStudy
 [ ] better styling (element.widget allows for more customization)
 [ ] Visual learing (bonsai)
-[ ] create new store
+[ ] create new set
 [ ] edit whole set eg.: delete/add/swap fields, set mainColumn
 
 -----
