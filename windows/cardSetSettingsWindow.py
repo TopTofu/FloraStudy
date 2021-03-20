@@ -1,5 +1,5 @@
 from typing import Dict
-from util.loadFileIntoSettings import loadFileIntoSettings
+from util.loadCardSetIntoSettings import loadCardSetIntoSettings
 from util.saveFile import saveFile
 from models.CardSet import CardSet
 import PySimpleGUI as gui
@@ -14,7 +14,7 @@ def init(cardSet: CardSet) -> CardSet:
     window = Layout.getStandartWindow(layout=Layout.getSettingsLayout(cardSet))
     window.finalize()
 
-    window, cardSet, promptCount, revealCount, promptSettings, revealSettings = loadFileIntoSettings(
+    window, cardSet, promptCount, revealCount, promptSettings, revealSettings = loadCardSetIntoSettings(
         window, cardSet)
 
     while True:

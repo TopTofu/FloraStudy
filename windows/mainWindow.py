@@ -62,11 +62,11 @@ def init(cardSet: CardSet) -> None:
 
                 cardSet.updateCard(newValues, cardIndex)
                 window['CARDLIST'].update(values=cardSet.cards)
-                
+
                 saveFile(cardSet, cardSet.originPath)
 
         elif event == 'STUDYBUTTON':
             studyWindow.init(cardSet)
-            
+
         elif event == 'CARDSETSETTINGSBUTTON':
             cardSet = cardSetSettingsWindow.init(cardSet)

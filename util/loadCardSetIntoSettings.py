@@ -1,15 +1,18 @@
+from models.CardSet import CardSet
 from typing import Dict
+import PySimpleGUI as gui
 
-def loadFileIntoSettings(window, cardSet):
+
+def loadCardSetIntoSettings(window: gui.Window, cardSet: CardSet):
     promptSettings: Dict[str, str] = {}
     revealSettings: Dict[str, str] = {}
 
     promptCount: int = 0
     revealCount: int = 0
-    
+
     for i in (2, 3, 4):
-            window[f'PROMPT{i}FRAME'].update(visible=False)
-            window[f'REVEAL{i}FRAME'].update(visible=False)
+        window[f'PROMPT{i}FRAME'].update(visible=False)
+        window[f'REVEAL{i}FRAME'].update(visible=False)
 
     for i, prompt in enumerate(cardSet.cardSetConfig['promptColumns']):
         promptCount += 1
@@ -34,5 +37,5 @@ def loadFileIntoSettings(window, cardSet):
 
     if revealCount == 4:
         window['ADDBUTTONREVEAL'].update(disabled=True)
-        
+
     return window, cardSet, promptCount, revealCount, promptSettings, revealSettings
