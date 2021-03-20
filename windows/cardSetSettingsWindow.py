@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 from util.loadCardSetIntoSettings import loadCardSetIntoSettings
 from util.saveFile import saveFile
 from models.CardSet import CardSet
@@ -8,8 +8,8 @@ import layout.Layout as Layout
 
 def init(cardSet: CardSet) -> CardSet:
 
-    promptColumns = []
-    revealColumns = []
+    promptColumns: List[Dict[str, int]] = []
+    revealColumns: List[Dict[str, int]] = []
 
     window = Layout.getStandartWindow(layout=Layout.getSettingsLayout(cardSet))
     window.finalize()
@@ -84,10 +84,10 @@ def init(cardSet: CardSet) -> CardSet:
 
         if event == 'Save':
             for key, value in promptSettings.items():  # adds the values from the prompt dict to a prompt list
-                promptColumns.append(value)
+                promptColumns.append({value: window[f'{key}FONT'].get()})
 
             for key, value in revealSettings.items():
-                revealColumns.append(value)
+                revealColumns.append({value: window[f'{key}FONT'].get()})
 
             # promptList is added to cardSetConfig
             cardSet.cardSetConfig['promptColumns'] = promptColumns

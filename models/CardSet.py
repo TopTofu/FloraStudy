@@ -37,8 +37,8 @@ class CardSet:
     def createCardSetConfig(self, cardSetConfig: Dict[str, Any]) -> Dict[str, Any]:
         if not cardSetConfig:
             cardSetConfig = {'mainColumn': self.columns[0],  # create now default cardSet config is None is given
-                             'promptColumns': [self.columns[0]],
-                             'revealColumns': []
+                             'promptColumns': [{self.columns[0]: 12}],
+                             'revealColumns': [{self.columns[1]: 12}]
                              }
             for card in self.cards:
                 # sets the main term of the cards once the config is created

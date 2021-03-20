@@ -1,3 +1,4 @@
+from windows.cardSetSettingsWindow import init
 from config.Config import Configuration
 from models.CardSet import CardSet
 import PySimpleGUI as gui
@@ -57,7 +58,10 @@ def getSettingsFrameLayout(cardSet: CardSet, kind: str, rows: int) -> List[List[
     return [[gui.Frame(title='', border_width=0,
                        layout=[[gui.Combo(values=cardSet.columns,
                                           enable_events=True, key=f'{kind}1',
-                                          readonly=True)]],
+                                          readonly=True),
+                                gui.Spin(values=list(range(5, 60)),
+                                         initial_value=12, enable_events=True,
+                                         key=f'{kind}1FONT', readonly=True)]],
                        key=f'{kind}1FRAME'),
              gui.Button('+', key=f'ADDBUTTON{kind}',
                         size=(1, 1), auto_size_button=False),
@@ -71,7 +75,10 @@ def getOptionFrame(kind: str, cardSet: CardSet, index: int):
                       layout=[[gui.Combo(values=cardSet.columns,
                                          enable_events=True,
                                          readonly=True,
-                                         key=f'{kind}{index}')]],
+                                         key=f'{kind}{index}'),
+                               gui.Spin(values=list(range(5, 60)),
+                                        initial_value=12, enable_events=True,
+                                        key=f'{kind}{index}FONT', readonly=True)]],
                       key=f'{kind}{index}FRAME')]
 
 

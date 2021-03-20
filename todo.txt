@@ -2,13 +2,13 @@
 [x] parse csv to useable format
 [x] basic rest api
 [x] ui
-[ ] study ui
-[ ] formatting of prompts eg.: choose which values to show
+[x] study ui
+[x] formatting of prompts eg.: choose which values to show
 [x] dictionary updating
 [x] display and store japanese chars
 [ ] scoring
 [x] persistence
-[ ] keybindings
+[x] keybindings
 [ ] configurable keybindings
 [ ] modes
 [x] project structure
