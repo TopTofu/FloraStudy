@@ -9,7 +9,7 @@ def saveFile(cardSet: CardSet, filePath: str) -> None:
     
     for card in cardSet.cards:
         cardValues = card.values
-        cardValues.update(card.data) # i hate python for this
+        cardValues.update({'data': card.data}) # i hate python for this
         outputList.append(cardValues)
     
     with open(filePath, 'w', encoding='utf-8') as f:

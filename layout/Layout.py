@@ -1,7 +1,7 @@
 from config.Config import Configuration
 from models.CardSet import CardSet
 import PySimpleGUI as gui
-from typing import List, Union
+from typing import KeysView, List, Sized, Union
 import os
 
 fileTypes = (('ALL Files', '*.*'),
@@ -34,7 +34,12 @@ def createEditorLayout(columns: List[str]) -> List[List[gui.Element]]:
                    gui.Input(size=(50, 1), key=column.upper(), font=(Configuration.getInstance()._Config['font'], 10))]
         layout.append(section)
 
-    layout.append([gui.Button('Save', key='SAVEBUTTON', disabled=False)])
+    layout.extend([[
+        gui.Frame(title='', border_width=0, element_justification='left',
+                  layout=[[gui.Button('Save', key='SAVEBUTTON')]]),
+        gui.Frame(title='', border_width=0, element_justification='right',
+                  layout=[[gui.Button('Set Settings', key='CARDSETSETTINGSBUTTON')]], pad=((200, 0), (0, 0)))
+    ]])
 
     return layout
 
@@ -53,7 +58,7 @@ def getMainWindow(cardSet: CardSet) -> gui.Window:
     layout = [
         [gui.Menu(getMenuLayout(), background_color='#FFFFFF')],
         [gui.Listbox(values=cardSet.cards, key='CARDLIST', auto_size_text=False,
-                     size=(10, 13), enable_events=True, select_mode=gui.LISTBOX_SELECT_MODE_SINGLE, 
+                     size=(10, 13), enable_events=True, select_mode=gui.LISTBOX_SELECT_MODE_SINGLE,
                      no_scrollbar=False, font=(Configuration.getInstance()._Config.get('font'), 11)),
          gui.Frame('Edit', editorLayout)],
         [gui.Button(button_text='Study', key='STUDYBUTTON')]
@@ -64,3 +69,15 @@ def getMainWindow(cardSet: CardSet) -> gui.Window:
 
 def getSaveAsWindow():
     return gui.popup_get_file('Save File', no_window=True, file_types=fileSaveTypes, save_as=True)
+
+
+def getChoiceLayout(key: str, values: List[str] = []) -> List[gui.Element]:
+    return [[gui.Combo(values=values, enable_events=True, readonly=True, key=key)]]
+
+
+def getChoiceLayoutFirst(cardSet):
+    return [[gui.Button('+', key='ADDPROMPTBUTTON'),
+             gui.Combo(default_value=cardSet.mainColumn,
+                       values=cardSet.columns,
+                       enable_events=True, key='PROMPT1',
+                       readonly=True)]]

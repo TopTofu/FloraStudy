@@ -17,6 +17,8 @@ class Card:
 
         if data is None:
             self.data = {'scoring': 0, 'last studied': None}
+        else:
+            self.data = data
 
     def setMainTerm(self, mainColumn: str) -> None:
         self.mainTerm = self.values[mainColumn]
@@ -29,3 +31,7 @@ class Card:
             self.values.update({key: value})
         
         self.mainTerm = self.values[mainColumn]
+
+    def updateData(self, newData: Dict[str, Any]):
+        for key, value in newData.items():
+            self.data.update({key: value})

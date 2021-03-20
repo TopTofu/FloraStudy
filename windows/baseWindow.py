@@ -30,7 +30,7 @@ def init() -> Union[CardSet, None]:
                 cards = CardSet(importPath)
                 break
 
-        print(event)
+        print(f'->{event}<-')
         
     
     window.close()

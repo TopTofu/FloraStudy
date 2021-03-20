@@ -11,7 +11,7 @@ def loadFile(filePath: str) -> Tuple[List[Card], List[str], Dict[str, str]]:
     cardList: List[Card] = []
     columns: List[str] = []
     cardSetConfig: Dict[str, str] = {}
-    
+
     mimetypes.add_type('FloraStudy Card-File', '.fsc')
     extensions = [s for s in Path(
         filePath).suffixes if s in mimetypes.types_map]
@@ -40,30 +40,37 @@ def loadFile(filePath: str) -> Tuple[List[Card], List[str], Dict[str, str]]:
                     entry.update({row[0]: row[index]})
 
                 # add that card to the card set
-                cardList.append(Card(entry, columns[0]))
+                cardList.append(Card(values=entry))
+
+            for i, card in enumerate(cardList):
+                if not 'data' in columns:
+                    card.data = {'score': 0, 'lastStudied': None, 'index': i}
 
     elif '.json' in extensions or '.fsc' in extensions:
         with open(filePath, 'r', encoding='utf-8') as inputFile:
             jsonObject = json.loads(inputFile.read())
-            
+
             if 'mainColumn' in jsonObject[0]:
                 cardSetConfig = jsonObject.pop(0)
             else:
                 for i, cardDict in enumerate(jsonObject):
                     if 'mainColumn' in cardDict:
-                        cardSetConfig = jsonObject.pop(i)  
+                        cardSetConfig = jsonObject.pop(i)
 
-            for cardDict in jsonObject:
-                cardList.append(Card(values=cardDict, 
-                                     mainColumn=cardSetConfig.get('mainColumn', None),
-                                     data=cardDict.pop('data')))
+            for i, cardDict in enumerate(jsonObject):
+                data = cardDict.get('data', None)
+                if data is not None:
+                    cardDict.pop('data')
+                else:
+                    data = {'score': 0, 'lastStudied': None, 'index': i}
+
+                cardList.append(Card(values=cardDict,
+                                     mainColumn=cardSetConfig.get(
+                                         'mainColumn', None),
+                                     data=data))
 
             # feels kinda weird because it's only looking at the first card and
             # takes the columns from that instead of check the other cards...
             columns = list(cardList[0].values.keys())
-
-    if not 'data' in columns:
-        for card in cardList:
-            card.data = {'data': {'score': 0, 'lastStudied': None}}
 
     return cardList, columns, cardSetConfig

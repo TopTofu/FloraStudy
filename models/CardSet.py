@@ -9,9 +9,8 @@ class CardSet:
     originPath: str
     columns: List[str]
     mainColumn: str
-    # listValues: List[str]  # values to display in Listbox
     setData: Dict[str, Any]
-    cardSetConfig: Dict[str, str]
+    cardSetConfig: Dict[str, Any]
 
     def __init__(self, filePath: str) -> None:
         self.originPath = filePath
@@ -19,20 +18,31 @@ class CardSet:
         if os.path.isfile(filePath):
             self.cards, self.columns, cardSetConfig = loadFile(
                 filePath=filePath)
-            if len(self.columns) > 0:
-                self.mainColumn = self.columns[0]
 
-            # self.listValues = []
-            # for card in self.cards:
-            #     self.listValues.append(card.values[self.mainColumn])
+            self.cardSetConfig = self.createCardSetConfig(cardSetConfig)
 
-            if not cardSetConfig:
-                self.cardSetConfig = {'mainColumn': self.columns[0]}
-                for card in self.cards:
-                    card.setMainTerm(self.cardSetConfig['mainColumn'])
-            else:
-                self.cardSetConfig = cardSetConfig
+            if cardSetConfig.get('mainColumn', None) is not None:
+                self.mainColumn = self.cardSetConfig['mainColumn']
 
+    # maybe swap cardIndex with card?
     def updateCard(self, newValues: Dict[str, str], cardIndex: int):
         if Card is not None:
-            self.cards[cardIndex].update(newValues=newValues, mainColumn=self.mainColumn)
+            self.cards[cardIndex].update(
+                newValues=newValues, mainColumn=self.mainColumn)
+
+    def updateCardData(self, newData: Dict[str, Any], card: Card):
+        if Card is not None:
+            self.cards[self.cards.index(card)].updateData(newData)
+
+    def createCardSetConfig(self, cardSetConfig: Dict[str, Any]) -> Dict[str, Any]:
+        if not cardSetConfig:
+            cardSetConfig = {'mainColumn': self.columns[0],  # create now default cardSet config is None is given
+                             'promptColumns': [self.columns[0]],
+                             'revealColumns': []
+                             }
+            for card in self.cards:
+                # sets the main term of the cards once the config is created
+                # because the mainColumn is only stored in the cardSetConfig
+                card.setMainTerm(cardSetConfig['mainColumn'])
+
+        return cardSetConfig

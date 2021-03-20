@@ -7,6 +7,7 @@ from util.saveFile import saveFile
 from util.findCardByMainColumn import findCardByMainColumn
 import layout.Layout as Layout
 from . import studyWindow
+from windows import cardSetSettingsWindow
 
 
 def init(cardSet: CardSet) -> None:
@@ -15,6 +16,7 @@ def init(cardSet: CardSet) -> None:
     columns = cardSet.columns
 
     window = Layout.getMainWindow(cardSet)
+    window.ElementJustification = 'center'
 
     while True:
         event, values = window.read()
@@ -56,12 +58,16 @@ def init(cardSet: CardSet) -> None:
             newValues = {column: window[column.upper()].get()
                          for column in columns}
 
-            cardIndex = cardSet.cards.index(currentCard)
+            if currentCard in cardSet.cards:
+                cardIndex = cardSet.cards.index(currentCard)
 
-            cardSet.updateCard(newValues, cardIndex)
-            window['CARDLIST'].update(values=cardSet.cards)
-            
-            saveFile(cardSet, cardSet.originPath)
+                cardSet.updateCard(newValues, cardIndex)
+                window['CARDLIST'].update(values=cardSet.cards)
+                
+                saveFile(cardSet, cardSet.originPath)
 
         elif event == 'STUDYBUTTON':
             studyWindow.init(cardSet)
+            
+        elif event == 'CARDSETSETTINGSBUTTON':
+            cardSetSettingsWindow.init(cardSet)
