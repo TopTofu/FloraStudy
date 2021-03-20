@@ -2,7 +2,6 @@ import PySimpleGUI as gui
 import os
 from models.CardSet import CardSet
 from models.Card import Card
-from typing import Dict, Union
 from util.saveFile import saveFile
 from util.findCardByMainColumn import findCardByMainColumn
 import layout.Layout as Layout
@@ -70,4 +69,4 @@ def init(cardSet: CardSet) -> None:
             studyWindow.init(cardSet)
             
         elif event == 'CARDSETSETTINGSBUTTON':
-            cardSetSettingsWindow.init(cardSet)
+            cardSet = cardSetSettingsWindow.init(cardSet)

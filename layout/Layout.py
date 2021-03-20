@@ -26,24 +26,6 @@ theme = {
 }
 
 
-def createEditorLayout(columns: List[str]) -> List[List[gui.Element]]:
-    layout = []
-
-    for column in columns:
-        section = [gui.Text(column.capitalize(), size=(15, 1)),
-                   gui.Input(size=(50, 1), key=column.upper(), font=(Configuration.getInstance()._Config['font'], 10))]
-        layout.append(section)
-
-    layout.extend([[
-        gui.Frame(title='', border_width=0, element_justification='left',
-                  layout=[[gui.Button('Save', key='SAVEBUTTON')]]),
-        gui.Frame(title='', border_width=0, element_justification='right',
-                  layout=[[gui.Button('Set Settings', key='CARDSETSETTINGSBUTTON')]], pad=((200, 0), (0, 0)))
-    ]])
-
-    return layout
-
-
 def getMenuLayout() -> List[List[Union[str, List[str]]]]:
     return [['File', ['Open...', 'Save', 'Save as...']]]
 
@@ -71,13 +53,49 @@ def getSaveAsWindow():
     return gui.popup_get_file('Save File', no_window=True, file_types=fileSaveTypes, save_as=True)
 
 
-def getChoiceLayout(key: str, values: List[str] = []) -> List[gui.Element]:
-    return [[gui.Combo(values=values, enable_events=True, readonly=True, key=key)]]
+def getSettingsFrameLayout(cardSet: CardSet, kind: str, rows: int) -> List[List[gui.Element]]:
+    return [[gui.Frame(title='', border_width=0,
+                       layout=[[gui.Combo(values=cardSet.columns,
+                                          enable_events=True, key=f'{kind}1',
+                                          readonly=True)]],
+                       key=f'{kind}1FRAME'),
+             gui.Button('+', key=f'ADDBUTTON{kind}',
+                        size=(1, 1), auto_size_button=False),
+             gui.Button('-', key=f'REMOVEBUTTON{kind}',
+                        size=(1, 1), auto_size_button=False, disabled=True)],
+            *[getOptionFrame(kind, cardSet, i) for i in range(2, rows+2)]]
 
 
-def getChoiceLayoutFirst(cardSet):
-    return [[gui.Button('+', key='ADDPROMPTBUTTON'),
-             gui.Combo(default_value=cardSet.mainColumn,
-                       values=cardSet.columns,
-                       enable_events=True, key='PROMPT1',
-                       readonly=True)]]
+def getOptionFrame(kind: str, cardSet: CardSet, index: int):
+    return [gui.Frame(title='', border_width=0,
+                      layout=[[gui.Combo(values=cardSet.columns,
+                                         enable_events=True,
+                                         readonly=True,
+                                         key=f'{kind}{index}')]],
+                      key=f'{kind}{index}FRAME')]
+
+
+def getSettingsLayout(cardSet: CardSet):
+    return [[gui.Frame(title='Prompt', layout=getSettingsFrameLayout(cardSet, 'PROMPT', 3),
+                       key='PROMPTSETTINGSFRAME')],
+            [gui.Frame(title='Reveal', layout=getSettingsFrameLayout(cardSet, 'REVEAL', 3),
+                       key='REVEALSETTINGSFRAME')],
+            [gui.Button(button_text='Save')]]
+
+
+def createEditorLayout(columns: List[str]) -> List[List[gui.Element]]:
+    layout = []
+
+    for column in columns:
+        section = [gui.Text(column.capitalize(), size=(15, 1)),
+                   gui.Input(size=(50, 1), key=column.upper(), font=(Configuration.getInstance()._Config['font'], 10))]
+        layout.append(section)
+
+    layout.extend([[
+        gui.Frame(title='', border_width=0, element_justification='left',
+                  layout=[[gui.Button('Save', key='SAVEBUTTON')]]),
+        gui.Frame(title='', border_width=0, element_justification='right',
+                  layout=[[gui.Button('Set Settings', key='CARDSETSETTINGSBUTTON')]], pad=((200, 0), (0, 0)))
+    ]])
+
+    return layout
