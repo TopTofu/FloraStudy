@@ -11,10 +11,9 @@ from util.saveFile import saveFile
 
 def init(cardSet: CardSet) -> CardSet:
 
-    cardsForReview: List[Card] = cardSet.cards
+    cardsForReview: List[Card] = cardSet.cards.copy()
 
     cardsForReview.sort(key=lambda c: c.data['score'], reverse=True)
-
     firstCard = cardsForReview.pop(0)
 
     difficultyButtons = [[gui.Button(button_text='Easy',
@@ -25,12 +24,6 @@ def init(cardSet: CardSet) -> CardSet:
                                      key='HARDBUTTON')]]
 
     font = Configuration.getInstance()._Config['font']
-
-    promptLayout = [[gui.Text(firstCard.mainTerm, font=(font, 45), key='PROMPTTEXT', size=(30, 1), justification='center')],
-                    [gui.Text(text=firstCard.values[cardSet.columns[1]],
-                              font=(font, 15),
-                              key='PROMPTTEXT2', size=(30, 1),
-                              justification='center')]]
 
     # need to use metadata for storing the corisponding column, because the key must be unique and we need to cover the case of the having the same column twice
     promptLayout = [*[[gui.Text(text=firstCard.values[list(col.keys())[0]], font=(font, list(col.values())[0]), justification='center',
@@ -71,10 +64,8 @@ def init(cardSet: CardSet) -> CardSet:
             event, values = window.read()
 
             if event in ('EASYBUTTON', 'MEDIUMBUTTON', 'HARDBUTTON', '1', '2', '3'):
-                # currentCard.data['score'] = evaluateScore(currentCard, event)
-                # cardSet.updateCardData(currentCard.data, currentCard)
-
-                # saveFile(cardSet, cardSet.originPath)
+                cardSet.cards[currentCard.data['index']].data['score'] = evaluateScore(currentCard, event)
+                saveFile(cardSet, cardSet.originPath)
 
                 if cardsForReview:
                     currentCard = cardsForReview.pop(0)
@@ -88,6 +79,8 @@ def init(cardSet: CardSet) -> CardSet:
                     window['SHOWBUTTON'].update(visible=True)
 
                 else:
+                    window.close()
+                    gui.Popup('Set finished!', keep_on_top=True)
                     break
 
     return cardSet

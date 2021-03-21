@@ -84,10 +84,10 @@ def init(cardSet: CardSet) -> CardSet:
 
         if event == 'Save':
             for key, value in promptSettings.items():  # adds the values from the prompt dict to a prompt list
-                promptColumns.append({value: window[f'{key}FONT'].get()})
+                promptColumns.append({value: window[f'{key}SIZE'].get()})
 
             for key, value in revealSettings.items():
-                revealColumns.append({value: window[f'{key}FONT'].get()})
+                revealColumns.append({value: window[f'{key}SIZE'].get()})
 
             # promptList is added to cardSetConfig
             cardSet.cardSetConfig['promptColumns'] = promptColumns

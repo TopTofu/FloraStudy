@@ -61,7 +61,7 @@ def getSettingsFrameLayout(cardSet: CardSet, kind: str, rows: int) -> List[List[
                                           readonly=True),
                                 gui.Spin(values=list(range(5, 60)),
                                          initial_value=12, enable_events=True,
-                                         key=f'{kind}1FONT', readonly=True)]],
+                                         key=f'{kind}1SIZE', readonly=True)]],
                        key=f'{kind}1FRAME'),
              gui.Button('+', key=f'ADDBUTTON{kind}',
                         size=(1, 1), auto_size_button=False),
@@ -78,7 +78,7 @@ def getOptionFrame(kind: str, cardSet: CardSet, index: int):
                                          key=f'{kind}{index}'),
                                gui.Spin(values=list(range(5, 60)),
                                         initial_value=12, enable_events=True,
-                                        key=f'{kind}{index}FONT', readonly=True)]],
+                                        key=f'{kind}{index}SIZE', readonly=True)]],
                       key=f'{kind}{index}FRAME')]
 
 
@@ -95,7 +95,7 @@ def createEditorLayout(columns: List[str]) -> List[List[gui.Element]]:
 
     for column in columns:
         section = [gui.Text(column.capitalize(), size=(15, 1)),
-                   gui.Input(size=(50, 1), key=column.upper(), font=(Configuration.getInstance()._Config['font'], 10))]
+                   gui.Input(size=(50, 1), key=column.upper(), font=(Configuration.getInstance()._Config['font'], 11))]
         layout.append(section)
 
     layout.extend([[
