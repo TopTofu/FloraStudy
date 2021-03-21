@@ -13,7 +13,7 @@ def init(cardSet: CardSet) -> CardSet:
 
     cardsForReview: List[Card] = cardSet.cards.copy()
 
-    cardsForReview.sort(key=lambda c: c.data['score'], reverse=True)
+    cardsForReview.sort(key=lambda c: c.data['score'])
     firstCard = cardsForReview.pop(0)
 
     difficultyButtons = [[gui.Button(button_text='Easy',
@@ -26,17 +26,15 @@ def init(cardSet: CardSet) -> CardSet:
     font = Configuration.getInstance()._Config['font']
 
     # need to use metadata for storing the corisponding column, because the key must be unique and we need to cover the case of the having the same column twice
-    promptLayout = [*[[gui.Text(text=firstCard.values[list(col.keys())[0]], font=(font, list(col.values())[0]), justification='center',
+    promptLayout = [*[[gui.Text(text=firstCard.values[list(col.keys())[0]], size=(50, 1), font=(font, list(col.values())[0]), justification='center',
                                 metadata=list(col.keys())[0])] for col in cardSet.cardSetConfig['promptColumns']]]
 
-    revealLayout = [[gui.Button(button_text='Show', key='SHOWBUTTON'),
-                     gui.Text(text='', visible=False,
-                              key='REVEALFIELD', size=(100, 1),
-                              justification='center')]]
+    revealLayout = [*[[gui.Text(text='', size=(50, 1), font=(font, list(col.values())[0]), justification='center',
+                                metadata=list(col.keys())[0])] for col in cardSet.cardSetConfig['revealColumns']]]
 
     layout = [[gui.Frame(title='', border_width=0, layout=promptLayout, element_justification='center', key='PROMPTFRAME')],
               [gui.HorizontalSeparator()],
-              [gui.Frame(title='', border_width=0, layout=revealLayout)],
+              [gui.Frame(title='', border_width=0, layout=revealLayout, key='REVEALFRAME', element_justification='center')],
               [gui.Frame(title='', border_width=0, pad=((0, 0), (70, 70)),
                          layout=[[]])],
               [gui.Frame(title='', layout=difficultyButtons, border_width=0,
@@ -54,29 +52,30 @@ def init(cardSet: CardSet) -> CardSet:
         if event == gui.WIN_CLOSED:
             break
 
-        if event in ('SHOWBUTTON', ' '):
+        if event == ' ':
             window['DIFFICULTYBUTTON'].update(visible=True)
-            window['SHOWBUTTON'].update(visible=False)
 
-            window['REVEALFIELD'].update(
-                visible=True, value=currentCard.values[cardSet.columns[2]])
+            for element in window['REVEALFRAME'].Rows:
+                col = element[0].metadata.lower()
+                element[0].update(currentCard.values[col])
+                
+            window['REVEALFRAME'].update(visible=True)    
 
             event, values = window.read()
 
             if event in ('EASYBUTTON', 'MEDIUMBUTTON', 'HARDBUTTON', '1', '2', '3'):
-                cardSet.cards[currentCard.data['index']].data['score'] = evaluateScore(currentCard, event)
+                cardSet.cards[currentCard.data['index']
+                              ].data['score'] = evaluateScore(currentCard, event)
                 saveFile(cardSet, cardSet.originPath)
 
                 if cardsForReview:
                     currentCard = cardsForReview.pop(0)
-                    window['REVEALFIELD'].update(visible=False)
+                    window['REVEALFRAME'].update(visible=False)
                     for element in window['PROMPTFRAME'].Rows:
                         col = element[0].metadata.lower()
                         element[0].update(currentCard.values[col])
 
-
                     window['DIFFICULTYBUTTON'].update(visible=False)
-                    window['SHOWBUTTON'].update(visible=True)
 
                 else:
                     window.close()

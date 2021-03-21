@@ -1,0 +1,238 @@
+[
+    {
+        "mainColumn": "word",
+        "promptColumns": [
+            {
+                "word": 25
+            },
+            {
+                "readings": 10
+            }
+        ],
+        "revealColumns": [
+            {
+                "meanings": 15
+            }
+        ]
+    },
+    {
+        "word": "\u5973",
+        "readings": "\u304a\u3093\u306a",
+        "meanings": "female",
+        "data": {
+            "score": 3,
+            "lastStudied": null,
+            "index": 0
+        }
+    },
+    {
+        "word": "\u7537",
+        "readings": "\u304a\u3068\u3053",
+        "meanings": "male",
+        "data": {
+            "score": -1,
+            "lastStudied": null,
+            "index": 1
+        }
+    },
+    {
+        "word": "\u304b\u3063\u3053\u3044\u3044",
+        "readings": "",
+        "meanings": "cool",
+        "data": {
+            "score": -1,
+            "lastStudied": null,
+            "index": 2
+        }
+    },
+    {
+        "word": "\u304b\u308f\u3044\u3044",
+        "readings": "",
+        "meanings": "cute",
+        "data": {
+            "score": -1,
+            "lastStudied": null,
+            "index": 3
+        }
+    },
+    {
+        "word": "\u4e00\u4eba",
+        "readings": "\u3072\u3068\u308a",
+        "meanings": "alone",
+        "data": {
+            "score": 2,
+            "lastStudied": null,
+            "index": 4
+        }
+    },
+    {
+        "word": "\u7dba\u9e97 ",
+        "readings": "\u304d\u308c\u3044",
+        "meanings": "pretty",
+        "data": {
+            "score": -1,
+            "lastStudied": null,
+            "index": 5
+        }
+    },
+    {
+        "word": "\u597d\u304d",
+        "readings": "\u3059\u304d",
+        "meanings": "liked",
+        "data": {
+            "score": 3,
+            "lastStudied": null,
+            "index": 6
+        }
+    },
+    {
+        "word": "\u5b89\u3044",
+        "readings": "\u3084\u3059\u3044",
+        "meanings": "cheap",
+        "data": {
+            "score": 0,
+            "lastStudied": null,
+            "index": 7
+        }
+    },
+    {
+        "word": "\u9ad8\u3044",
+        "readings": "\u305f\u304b\u3044",
+        "meanings": "expensive",
+        "data": {
+            "score": 0,
+            "lastStudied": null,
+            "index": 8
+        }
+    },
+    {
+        "word": "\u9045\u3044",
+        "readings": "\u304a\u305d\u3044",
+        "meanings": "slow",
+        "data": {
+            "score": -1,
+            "lastStudied": null,
+            "index": 9
+        }
+    },
+    {
+        "word": "\u65e9\u3044",
+        "readings": "\u306f\u3084\u3044",
+        "meanings": "quick",
+        "data": {
+            "score": 2,
+            "lastStudied": null,
+            "index": 10
+        }
+    },
+    {
+        "word": "\u7f8e\u5473\u3057\u3044",
+        "readings": "\u304a\u3044\u3057\u3044",
+        "meanings": "delicious",
+        "data": {
+            "score": 0,
+            "lastStudied": null,
+            "index": 11
+        }
+    },
+    {
+        "word": "\u4e0d\u5473\u3044",
+        "readings": "\u307e\u305a\u3044",
+        "meanings": "awful, bad taste",
+        "data": {
+            "score": -1,
+            "lastStudied": null,
+            "index": 12
+        }
+    },
+    {
+        "word": "\u660e\u308b\u3044",
+        "readings": "\u3042\u304b\u308b\u3044",
+        "meanings": "bright",
+        "data": {
+            "score": 0,
+            "lastStudied": null,
+            "index": 13
+        }
+    },
+    {
+        "word": "\u5c0f\u3055\u3044",
+        "readings": "\u3061\u3044\u3055\u3044",
+        "meanings": "small",
+        "data": {
+            "score": 2,
+            "lastStudied": null,
+            "index": 14
+        }
+    },
+    {
+        "word": "\u53e4\u3044",
+        "readings": "\u3075\u308b\u3044",
+        "meanings": "old",
+        "data": {
+            "score": 2,
+            "lastStudied": null,
+            "index": 15
+        }
+    },
+    {
+        "word": "\u65b0\u3057\u3044",
+        "readings": "\u3042\u305f\u3089\u3057\u3044",
+        "meanings": "new",
+        "data": {
+            "score": 0,
+            "lastStudied": null,
+            "index": 16
+        }
+    },
+    {
+        "word": "\u72ed\u3044",
+        "readings": "\u305b\u307e\u3044",
+        "meanings": "narrow, small",
+        "data": {
+            "score": -1,
+            "lastStudied": null,
+            "index": 17
+        }
+    },
+    {
+        "word": "\u7720\u3044",
+        "readings": "\u306d\u3080\u3044",
+        "meanings": "tired",
+        "data": {
+            "score": 0,
+            "lastStudied": null,
+            "index": 18
+        }
+    },
+    {
+        "word": "\u5e83\u3044",
+        "readings": "\u3072\u308d\u3044",
+        "meanings": "spacious",
+        "data": {
+            "score": -1,
+            "lastStudied": null,
+            "index": 19
+        }
+    },
+    {
+        "word": "\u5927\u304d\u3044",
+        "readings": "\u304a\u304a\u304d\u3044",
+        "meanings": "big",
+        "data": {
+            "score": 2,
+            "lastStudied": null,
+            "index": 20
+        }
+    },
+    {
+        "word": "\u6697\u3044",
+        "readings": "\u304f\u3089\u3044",
+        "meanings": "dark",
+        "data": {
+            "score": 0,
+            "lastStudied": null,
+            "index": 21
+        }
+    }
+]

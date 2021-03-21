@@ -6,13 +6,14 @@
 [x] formatting of prompts eg.: choose which values to show
 [x] dictionary updating
 [x] display and store japanese chars
-[ ] scoring
+[x] first simple version of scoring
 [x] persistence
 [x] keybindings
 [ ] configurable keybindings
 [ ] modes
 [x] project structure
 [x] editor
+[ ] spaced repetition
 [ ] add cards in editor
 [ ] stats
 [ ] log

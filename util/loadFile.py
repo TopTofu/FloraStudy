@@ -30,6 +30,8 @@ def loadFile(filePath: str) -> Tuple[List[Card], List[str], Dict[str, str]]:
                 columns.append(rowList[i][0].lower())
 
             for cardName in rowList[0]:
+                if not cardName:
+                    continue
                 # basicly the index of the card in the excel table
                 index = rowList[0].index(cardName)
                 if index == 0:
