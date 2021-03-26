@@ -28,3 +28,4 @@
 
 [ ] App
 [ ] Rest Server and API
+[ ] utilize jisho.org api for eg. stroke order, meanings ....

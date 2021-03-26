@@ -4,6 +4,7 @@ from util.saveFile import saveFile
 from models.CardSet import CardSet
 import PySimpleGUI as gui
 import layout.Layout as Layout
+from util.log.log import LogLevel, consoleLog
 
 
 def init(cardSet: CardSet) -> CardSet:
@@ -19,6 +20,7 @@ def init(cardSet: CardSet) -> CardSet:
 
     while True:
         event, values = window.read()
+        consoleLog(LogLevel.INFO, 'Event occured: ', f'{event}')
 
         if event == gui.WIN_CLOSED:
             break

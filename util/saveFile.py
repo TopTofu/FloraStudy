@@ -1,9 +1,14 @@
 import json
+from util.log.log import LogLevel, consoleLog
 from models.CardSet import CardSet
 from models.Card import Card
 from typing import List, Dict, Any
 
 def saveFile(cardSet: CardSet, filePath: str) -> None:
+    
+    if filePath[-3:] == 'csv':
+        consoleLog(LogLevel.WARNING, 'Can\'t save to .csv files' , '')
+        return
     
     outputList: List[Dict[str, Any]] = [cardSet.cardSetConfig]
     

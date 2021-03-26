@@ -5,8 +5,8 @@ from models.Card import Card
 from util.saveFile import saveFile
 from util.findCardByMainColumn import findCardByMainColumn
 import layout.Layout as Layout
-from . import studyWindow
-from windows import cardSetSettingsWindow
+from windows import cardSetSettingsWindow, studyWindow
+from util.log.log import LogLevel, consoleLog
 
 
 def init(cardSet: CardSet) -> None:
@@ -19,6 +19,7 @@ def init(cardSet: CardSet) -> None:
 
     while True:
         event, values = window.read()
+        consoleLog(LogLevel.INFO, 'Event occured: ', f'{event}')
 
         if event == gui.WIN_CLOSED:
             break
@@ -64,6 +65,8 @@ def init(cardSet: CardSet) -> None:
                 window['CARDLIST'].update(values=cardSet.cards)
 
                 saveFile(cardSet, cardSet.originPath)
+                consoleLog(LogLevel.SUCCESS,
+                           'Saved card to file ', f'{currentCard}')
 
         elif event == 'STUDYBUTTON':
             studyWindow.init(cardSet)

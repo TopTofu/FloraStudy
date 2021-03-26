@@ -21,7 +21,7 @@ class CardSet:
 
             self.cardSetConfig = self.createCardSetConfig(cardSetConfig)
 
-            if cardSetConfig.get('mainColumn', None) is not None:
+            if self.cardSetConfig.get('mainColumn', None) is not None:
                 self.mainColumn = self.cardSetConfig['mainColumn']
 
     # maybe swap cardIndex with card?

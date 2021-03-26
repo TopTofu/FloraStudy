@@ -1,3 +1,4 @@
+from util.log.log import LogLevel, consoleLog
 from util.evalutateScore import evaluateScore
 import PySimpleGUI as gui
 from models.CardSet import CardSet
@@ -48,6 +49,7 @@ def init(cardSet: CardSet) -> CardSet:
 
     while True:
         event, values = window.read()
+        consoleLog(LogLevel.INFO, f'Event occured: ', f'{event}')
 
         if event == gui.WIN_CLOSED:
             break
