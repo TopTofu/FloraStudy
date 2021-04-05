@@ -4,6 +4,7 @@ import mimetypes
 import csv
 import json
 from typing import Dict, Tuple, List, Union
+from util.exceptions.ParsingError import CSVParsingError
 from models.Card import Card
 
 
@@ -19,34 +20,22 @@ def loadFile(filePath: str) -> Tuple[List[Card], List[str], Dict[str, str]]:
     if '.csv' in extensions:
         with open(filePath, 'r', encoding='utf-8') as inputFile:
             reader = csv.reader(inputFile)
-            rowList = []
 
-            for row in reader:
-                # copy data from ready, because it can only be read once
-                rowList.append(row)
+            # copy data from ready, because it can only be read once
+            rowList = [row for row in reader]
 
-            for i in range(len(rowList)):
-                # first column in excel (bad var name); these are the column names
-                columns.append(rowList[i][0].lower())
+            # first column in excel (bad variable name); these are the column names
+            columns = [col.lower() for col in rowList[0]]
 
-            for cardName in rowList[0]:
-                if not cardName:
-                    continue
-                # basicly the index of the card in the excel table
-                index = rowList[0].index(cardName)
-                if index == 0:
-                    continue  # skip first column because it contains the column names
-                entry = {}
-                for row in rowList:
-                    # for every coloum name add the card data to the entry
-                    entry.update({row[0]: row[index]})
+            for i, row in enumerate(rowList[1:]):
+                try:
+                    entry = Card(values={columns[i]: row[i] for i, c in enumerate(columns)},
+                                 mainColumn=columns[0],
+                                 data={'score': 0, 'lastStudied': None, 'index': i})
+                except IndexError as e:
+                    raise CSVParsingError('Some rows contain too few values')
 
-                # add that card to the card set
-                cardList.append(Card(values=entry))
-
-            for i, card in enumerate(cardList):
-                if not 'data' in columns:
-                    card.data = {'score': 0, 'lastStudied': None, 'index': i}
+                cardList.append(entry)
 
     elif '.json' in extensions or '.fsc' in extensions:
         with open(filePath, 'r', encoding='utf-8') as inputFile:

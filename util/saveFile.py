@@ -7,7 +7,7 @@ from typing import List, Dict, Any
 def saveFile(cardSet: CardSet, filePath: str) -> None:
     
     if filePath[-3:] == 'csv':
-        consoleLog(LogLevel.WARNING, 'Can\'t save to .csv files' , '')
+        consoleLog(LogLevel.WARNING, 'Can not save to .csv files' , '')
         return
     
     outputList: List[Dict[str, Any]] = [cardSet.cardSetConfig]

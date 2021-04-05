@@ -19,22 +19,22 @@ class CardSet:
             self.cards, self.columns, cardSetConfig = loadFile(
                 filePath=filePath)
 
-            self.cardSetConfig = self.createCardSetConfig(cardSetConfig)
+            self.cardSetConfig = self.createCardSetConfigIfNotEmpty(
+                cardSetConfig)
 
             if self.cardSetConfig.get('mainColumn', None) is not None:
                 self.mainColumn = self.cardSetConfig['mainColumn']
 
     # maybe swap cardIndex with card?
     def updateCard(self, newValues: Dict[str, str], cardIndex: int):
-        if Card is not None:
-            self.cards[cardIndex].update(
-                newValues=newValues, mainColumn=self.mainColumn)
+        self.cards[cardIndex].update(
+            newValues=newValues, mainColumn=self.mainColumn)
 
     def updateCardData(self, newData: Dict[str, Any], card: Card):
         if Card is not None:
             self.cards[self.cards.index(card)].updateData(newData)
 
-    def createCardSetConfig(self, cardSetConfig: Dict[str, Any]) -> Dict[str, Any]:
+    def createCardSetConfigIfNotEmpty(self, cardSetConfig: Dict[str, Any]) -> Dict[str, Any]:
         if not cardSetConfig:
             cardSetConfig = {'mainColumn': self.columns[0],  # create now default cardSet config is None is given
                              'promptColumns': [{self.columns[0]: 12}],
